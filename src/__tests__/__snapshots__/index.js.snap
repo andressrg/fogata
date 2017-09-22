@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`dumps 1`] = `
+Object {
+  "artist": Object {
+    "myAsyncAttr": "something",
+    "name": "El Cuarteto De Nos",
+  },
+  "release_date": "2014-10-06T18:51:17.749Z",
+  "title": "Habla Tu Espejo",
+}
+`;
+
+exports[`dumps sync 1`] = `
+Object {
+  "artist": Object {
+    "name": "El Cuarteto De Nos",
+  },
+  "release_date": "2014-10-06T18:51:17.749Z",
+  "title": "Habla Tu Espejo",
+}
+`;
+
+exports[`loads 1`] = `
+Object {
+  "artist": Object {
+    "myAsyncAttr": "something",
+    "name": "El Cuarteto De Nos",
+  },
+  "release_date": 2014-10-06T18:51:17.749Z,
+  "title": "Habla Tu Espejo",
+}
+`;
+
+exports[`loads sync 1`] = `
+Object {
+  "artist": Object {
+    "name": "El Cuarteto De Nos",
+  },
+  "release_date": 2014-10-06T18:51:17.749Z,
+  "title": "Habla Tu Espejo",
+}
+`;
