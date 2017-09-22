@@ -35,3 +35,6 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "yarn.lock" }}
       - run: yarn test
+
+workflows:
+  version: 2
