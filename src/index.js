@@ -90,7 +90,6 @@ class AsyncNested extends AsyncField {
   }
 
   load(input) {
-    console.log('input', input);
     return this.nestedSchema.load(input);
   }
 
