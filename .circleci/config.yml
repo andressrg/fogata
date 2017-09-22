@@ -2,7 +2,7 @@ version: 2
 jobs:
   build-7:
     docker:
-      - image: circleci/node:7
+      - image: circleci/node:7.10.1
     working_directory: ~/repo
     steps:
       - checkout
@@ -20,7 +20,7 @@ jobs:
 
   build-8:
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:8.5.0
     working_directory: ~/repo
     steps:
       - checkout
