@@ -30,20 +30,6 @@ class AlbumSchema extends Schema {
   }
 
   static get artist() {
-    return new fields.Nested(new ArtistSchema());
-  }
-}
-
-class AsyncAlbumSchema extends Schema {
-  static get title() {
-    return new fields.Str();
-  }
-
-  static get release_date() {
-    return new fields.DateField();
-  }
-
-  static get artist() {
     return new fields.AsyncNested(new ArtistSchema());
   }
 }
@@ -56,7 +42,7 @@ class Instancifier {
 
 it('loads', async () => {
   expect(
-    await new AsyncAlbumSchema().load({
+    await new AlbumSchema().load({
       artist: { name: 'El Cuarteto De Nos', myAsyncAttr: 'something' },
       title: 'Habla Tu Espejo',
       release_date: '2014-10-06T18:51:17.749Z'
@@ -66,7 +52,7 @@ it('loads', async () => {
 
 it('dumps', async () => {
   expect(
-    await new AsyncAlbumSchema().dump(
+    await new AlbumSchema().dump(
       new Instancifier({
         artist: new Instancifier({
           name: 'El Cuarteto De Nos',
@@ -82,7 +68,7 @@ it('dumps', async () => {
 it('dumps only', async () => {
   expect(
     _.keys(
-      await new AsyncAlbumSchema({ only: ['title', 'release_date'] }).dump(
+      await new AlbumSchema({ only: ['title', 'release_date'] }).dump(
         new Instancifier({
           artist: new Instancifier({
             name: 'El Cuarteto De Nos',
@@ -99,7 +85,7 @@ it('dumps only', async () => {
 it('dumps exclude', async () => {
   expect(
     _.keys(
-      await new AsyncAlbumSchema({ exclude: ['title'] }).dump(
+      await new AlbumSchema({ exclude: ['title'] }).dump(
         new Instancifier({
           artist: new Instancifier({
             name: 'El Cuarteto De Nos',
@@ -114,7 +100,7 @@ it('dumps exclude', async () => {
 });
 
 it('dumps many', async () => {
-  const result = await new AsyncAlbumSchema({ many: true }).dump(
+  const result = await new AlbumSchema({ many: true }).dump(
     _.times(
       3,
       () =>
