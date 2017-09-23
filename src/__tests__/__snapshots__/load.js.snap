@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`loads 1`] = `
+Object {
+  "artist": Object {
+    "myAsyncAttr": "something",
+    "name": "El Cuarteto De Nos",
+  },
+  "release_date": 2014-10-06T18:51:17.749Z,
+  "title": "Habla Tu Espejo",
+}
+`;
