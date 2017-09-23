@@ -1,13 +1,41 @@
 const { ValidationError } = require('./errors');
 
+class Validator {
+  validate() {}
+}
+
+class RequiredValidator extends Validator {
+  validate(value) {
+    super.validate(...arguments);
+    if (value === null || value === undefined) {
+      throw new ValidationError('Required value.');
+    }
+  }
+}
+
 class BaseField {
   constructor(params = {}) {
-    this.required = params.required !== undefined && !!params.required;
+    this.validators = params.validators || [];
+
+    this.required = params.required;
+    if (this.required === true) {
+      this.validators = [...this.validators, new RequiredValidator()];
+    }
   }
 
   load(input) {
-    if (this.required && input === undefined) {
-      throw new ValidationError('Required value');
+    const errors = this.validators
+      .map(validator => {
+        try {
+          validator.validate(input);
+        } catch (err) {
+          return err.toString();
+        }
+      })
+      .filter(e => !!e);
+
+    if (errors.length > 0) {
+      throw new ValidationError(errors);
     }
 
     return input;
@@ -46,19 +74,20 @@ class DateField extends Field {
   }
 }
 
-class EmailField extends Field {
-  load(input) {
-    input = super.load(...arguments);
-    if (input === undefined) return;
-    if (!input.includes('@')) {
-      throw new ValidationError('Invalid email.');
-    }
-    return input;
-  }
+class EmailValidator extends Validator {
+  validate(value) {
+    super.validate(...arguments);
 
-  dump(input) {
-    input = super.dump(...arguments);
-    return input;
+    if (value !== undefined && !value.includes('@')) {
+      throw new ValidationError(`${value} is not a valid email address.`);
+    }
+  }
+}
+
+class EmailField extends Field {
+  constructor() {
+    super();
+    this.validators = [...this.validators, new EmailValidator()];
   }
 }
 

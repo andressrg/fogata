@@ -44,10 +44,20 @@ class Schema {
   }
 
   async load(data) {
-    const result = this.loadSync(data);
-    for (const field of this._getAsyncFields()) {
-      result[field] = await this.constructor[field].load(data[field]);
+    const result = {};
+    const errors = {};
+    for (const field of [...this._getSyncFields(), ...this._getAsyncFields()]) {
+      try {
+        result[field] = await this.constructor[field].load(data[field]);
+      } catch (err) {
+        errors[field] = [...(errors[field] || []), err.toString()];
+      }
     }
+
+    if (Object.getOwnPropertyNames(errors).length > 0) {
+      throw new ValidationError({ messages: errors });
+    }
+
     return result;
   }
 

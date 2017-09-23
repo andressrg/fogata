@@ -48,13 +48,28 @@ it('validation throws', async () => {
     static get email() {
       return new fields.EmailField({ required: true });
     }
+
+    static get name() {
+      return new fields.StringField({ required: true });
+    }
   }
 
-  await expect(
-    new UserSchema().load({
-      email: 'invalid'
-    })
-  ).rejects.toBeInstanceOf(ValidationError);
+  const resultPromise = new UserSchema().load({
+    email: 'foo'
+  });
+  await expect(resultPromise).rejects.toBeInstanceOf(ValidationError);
+
+  try {
+    await new UserSchema().load({
+      email: 'foo'
+    });
+  } catch (err) {
+    expect(err).toBeInstanceOf(ValidationError);
+    expect(err.messages).toEqual({
+      email: ['foo is not a valid email address.'],
+      name: ['Required value.']
+    });
+  }
 
   await expect(new UserSchema().load({})).rejects.toBeInstanceOf(
     ValidationError
