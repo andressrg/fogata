@@ -20,7 +20,7 @@ class Schema {
     return true;
   }
 
-  _getSyncFields() {
+  _getFields() {
     return Object.getOwnPropertyNames(this.constructor).filter(
       attr =>
         this.constructor[attr] instanceof fields.Field &&
@@ -28,18 +28,10 @@ class Schema {
     );
   }
 
-  _getAsyncFields() {
-    return Object.getOwnPropertyNames(this.constructor).filter(
-      attr =>
-        this.constructor[attr] instanceof fields.AsyncField &&
-        this._checkExcludeAndOnly(attr)
-    );
-  }
-
   async load(data) {
     const result = {};
     const errors = {};
-    for (const field of [...this._getSyncFields(), ...this._getAsyncFields()]) {
+    for (const field of this._getFields()) {
       try {
         result[field] = await this.constructor[field].load(data[field]);
       } catch (err) {
@@ -56,7 +48,7 @@ class Schema {
 
   async _dumpOne(data) {
     const result = {};
-    for (const field of [...this._getSyncFields(), ...this._getAsyncFields()]) {
+    for (const field of this._getFields()) {
       result[field] = await this.constructor[field].dump(data[field]);
     }
     return result;
