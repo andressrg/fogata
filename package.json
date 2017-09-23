@@ -13,6 +13,7 @@
   "author": "Andres Serrano",
   "license": "MIT",
   "devDependencies": {
-    "jest": "^21.1.0"
+    "jest": "^21.1.0",
+    "lodash": "^4.17.4"
   }
 }
