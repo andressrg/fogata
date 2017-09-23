@@ -36,13 +36,6 @@ class Schema {
     );
   }
 
-  loadSync(data) {
-    return this._getSyncFields().reduce((result, field) => {
-      result[field] = this.constructor[field].load(data[field]);
-      return result;
-    }, {});
-  }
-
   async load(data) {
     const result = {};
     const errors = {};
@@ -61,16 +54,9 @@ class Schema {
     return result;
   }
 
-  dumpSync(data) {
-    return this._getSyncFields().reduce((result, field) => {
-      result[field] = this.constructor[field].dump(data[field]);
-      return result;
-    }, {});
-  }
-
   async _dumpOne(data) {
-    const result = this.dumpSync(data);
-    for (const field of this._getAsyncFields()) {
+    const result = {};
+    for (const field of [...this._getSyncFields(), ...this._getAsyncFields()]) {
       result[field] = await this.constructor[field].dump(data[field]);
     }
     return result;
