@@ -13,7 +13,7 @@ class MyAsyncField extends fields.AsyncField {
 
 class ArtistSchema extends Schema {
   static get name() {
-    return new fields.Str();
+    return new fields.StringField();
   }
   static get myAsyncAttr() {
     return new MyAsyncField();
@@ -22,7 +22,7 @@ class ArtistSchema extends Schema {
 
 class AlbumSchema extends Schema {
   static get title() {
-    return new fields.Str();
+    return new fields.StringField();
   }
 
   static get release_date() {
@@ -30,7 +30,7 @@ class AlbumSchema extends Schema {
   }
 
   static get artist() {
-    return new fields.AsyncNested(new ArtistSchema());
+    return new fields.AsyncNestedField(new ArtistSchema());
   }
 }
 
