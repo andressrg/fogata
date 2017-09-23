@@ -1,13 +1,35 @@
 class Schema {
+  constructor(params = {}) {
+    this.only = params.only;
+    this.exclude = params.exclude;
+    this.many = params.many;
+  }
+
+  _checkExcludeAndOnly(attr) {
+    if (this.exclude !== undefined) {
+      return !this.exclude.includes(attr);
+    }
+
+    if (this.only !== undefined) {
+      return this.only.includes(attr);
+    }
+
+    return true;
+  }
+
   _getSyncFields() {
     return Object.getOwnPropertyNames(this.constructor).filter(
-      attr => this.constructor[attr] instanceof Field
+      attr =>
+        this.constructor[attr] instanceof Field &&
+        this._checkExcludeAndOnly(attr)
     );
   }
 
   _getAsyncFields() {
     return Object.getOwnPropertyNames(this.constructor).filter(
-      attr => this.constructor[attr] instanceof AsyncField
+      attr =>
+        this.constructor[attr] instanceof AsyncField &&
+        this._checkExcludeAndOnly(attr)
     );
   }
 
@@ -33,12 +55,19 @@ class Schema {
     }, {});
   }
 
-  async dump(data) {
+  async _dumpOne(data) {
     const result = this.dumpSync(data);
     for (const field of this._getAsyncFields()) {
       result[field] = await this.constructor[field].dump(data[field]);
     }
     return result;
+  }
+
+  async dump(data) {
+    if (this.many === true) {
+      return await Promise.all(data.map(one => this._dumpOne(one)));
+    }
+    return await this._dumpOne(data);
   }
 }
 
@@ -98,6 +127,8 @@ class AsyncNested extends AsyncField {
   }
 }
 
+class ValidationError extends Error {}
+
 const fields = { Field, AsyncField, Str, Nested, AsyncNested, DateField };
 
-module.exports = { Schema, fields };
+module.exports = { Schema, fields, ValidationError };

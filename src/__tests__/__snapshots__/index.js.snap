@@ -11,30 +11,39 @@ Object {
 }
 `;
 
-exports[`dumps sync 1`] = `
-Object {
-  "artist": Object {
-    "name": "El Cuarteto De Nos",
+exports[`dumps many 1`] = `
+Array [
+  Object {
+    "artist": Object {
+      "myAsyncAttr": "something",
+      "name": "El Cuarteto De Nos",
+    },
+    "release_date": "2014-10-06T18:51:17.749Z",
+    "title": "Habla Tu Espejo",
   },
-  "release_date": "2014-10-06T18:51:17.749Z",
-  "title": "Habla Tu Espejo",
-}
+  Object {
+    "artist": Object {
+      "myAsyncAttr": "something",
+      "name": "El Cuarteto De Nos",
+    },
+    "release_date": "2014-10-06T18:51:17.749Z",
+    "title": "Habla Tu Espejo",
+  },
+  Object {
+    "artist": Object {
+      "myAsyncAttr": "something",
+      "name": "El Cuarteto De Nos",
+    },
+    "release_date": "2014-10-06T18:51:17.749Z",
+    "title": "Habla Tu Espejo",
+  },
+]
 `;
 
 exports[`loads 1`] = `
 Object {
   "artist": Object {
     "myAsyncAttr": "something",
-    "name": "El Cuarteto De Nos",
-  },
-  "release_date": 2014-10-06T18:51:17.749Z,
-  "title": "Habla Tu Espejo",
-}
-`;
-
-exports[`loads sync 1`] = `
-Object {
-  "artist": Object {
     "name": "El Cuarteto De Nos",
   },
   "release_date": 2014-10-06T18:51:17.749Z,

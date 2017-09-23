@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const { Schema, fields } = require('../');
 
 class MyAsyncField extends fields.AsyncField {
@@ -47,15 +48,11 @@ class AsyncAlbumSchema extends Schema {
   }
 }
 
-it('loads sync', async () => {
-  expect(
-    new AlbumSchema().loadSync({
-      artist: { name: 'El Cuarteto De Nos', myAsyncAttr: 'something' },
-      title: 'Habla Tu Espejo',
-      release_date: '2014-10-06T18:51:17.749Z'
-    })
-  ).toMatchSnapshot();
-});
+class Instancifier {
+  constructor(data) {
+    Object.getOwnPropertyNames(data).forEach(attr => (this[attr] = data[attr]));
+  }
+}
 
 it('loads', async () => {
   expect(
@@ -67,19 +64,11 @@ it('loads', async () => {
   ).toMatchSnapshot();
 });
 
-it('dumps sync', async () => {
-  class Objectifier {
-    constructor(data) {
-      Object.getOwnPropertyNames(data).forEach(
-        attr => (this[attr] = data[attr])
-      );
-    }
-  }
-
+it('dumps', async () => {
   expect(
-    new AlbumSchema().dumpSync(
-      new Objectifier({
-        artist: new Objectifier({
+    await new AsyncAlbumSchema().dump(
+      new Instancifier({
+        artist: new Instancifier({
           name: 'El Cuarteto De Nos',
           myAsyncAttr: 'something'
         }),
@@ -90,25 +79,56 @@ it('dumps sync', async () => {
   ).toMatchSnapshot();
 });
 
-it('dumps', async () => {
-  class Objectifier {
-    constructor(data) {
-      Object.getOwnPropertyNames(data).forEach(
-        attr => (this[attr] = data[attr])
-      );
-    }
-  }
-
+it('dumps only', async () => {
   expect(
-    await new AsyncAlbumSchema().dump(
-      new Objectifier({
-        artist: new Objectifier({
-          name: 'El Cuarteto De Nos',
-          myAsyncAttr: 'something'
-        }),
-        title: 'Habla Tu Espejo',
-        release_date: new Date('2014-10-06T18:51:17.749Z')
-      })
+    _.keys(
+      await new AsyncAlbumSchema({ only: ['title', 'release_date'] }).dump(
+        new Instancifier({
+          artist: new Instancifier({
+            name: 'El Cuarteto De Nos',
+            myAsyncAttr: 'something'
+          }),
+          title: 'Habla Tu Espejo',
+          release_date: new Date('2014-10-06T18:51:17.749Z')
+        })
+      )
     )
-  ).toMatchSnapshot();
+  ).toEqual(['title', 'release_date']);
+});
+
+it('dumps exclude', async () => {
+  expect(
+    _.keys(
+      await new AsyncAlbumSchema({ exclude: ['title'] }).dump(
+        new Instancifier({
+          artist: new Instancifier({
+            name: 'El Cuarteto De Nos',
+            myAsyncAttr: 'something'
+          }),
+          title: 'Habla Tu Espejo',
+          release_date: new Date('2014-10-06T18:51:17.749Z')
+        })
+      )
+    )
+  ).toEqual(['release_date', 'artist']);
+});
+
+it('dumps many', async () => {
+  const result = await new AsyncAlbumSchema({ many: true }).dump(
+    _.times(
+      3,
+      () =>
+        new Instancifier({
+          artist: new Instancifier({
+            name: 'El Cuarteto De Nos',
+            myAsyncAttr: 'something'
+          }),
+          title: 'Habla Tu Espejo',
+          release_date: new Date('2014-10-06T18:51:17.749Z')
+        })
+    )
+  );
+  expect(result).toBeInstanceOf(Array);
+  expect(result).toHaveLength(3);
+  expect(result).toMatchSnapshot();
 });
