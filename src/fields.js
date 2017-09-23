@@ -13,7 +13,7 @@ class RequiredValidator extends Validator {
   }
 }
 
-class BaseField {
+class Field {
   constructor(params = {}) {
     this.validators = params.validators || [];
 
@@ -45,10 +45,6 @@ class BaseField {
     return input;
   }
 }
-
-class Field extends BaseField {}
-
-class AsyncField extends BaseField {}
 
 class StringField extends Field {
   load(input) {
@@ -99,23 +95,6 @@ class NestedField extends Field {
 
   load(input) {
     input = super.load(...arguments);
-    return this.nestedSchema.loadSync(input);
-  }
-
-  dump(input) {
-    input = super.dump(...arguments);
-    return this.nestedSchema.dumpSync(input);
-  }
-}
-
-class AsyncNestedField extends AsyncField {
-  constructor(nestedSchema) {
-    super(...arguments);
-    this.nestedSchema = nestedSchema;
-  }
-
-  load(input) {
-    input = super.load(...arguments);
     return this.nestedSchema.load(input);
   }
 
@@ -127,10 +106,8 @@ class AsyncNestedField extends AsyncField {
 
 module.exports = {
   Field,
-  AsyncField,
   StringField,
   NestedField,
-  AsyncNestedField,
   DateField,
   EmailField
 };

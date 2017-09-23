@@ -1,6 +1,6 @@
 const { Schema, fields, ValidationError } = require('../');
 
-class MyAsyncField extends fields.AsyncField {
+class MyAsyncField extends fields.Field {
   async load(input) {
     return await Promise.resolve(input);
   }
@@ -29,7 +29,7 @@ class AlbumSchema extends Schema {
   }
 
   static get artist() {
-    return new fields.AsyncNestedField(new ArtistSchema());
+    return new fields.NestedField(new ArtistSchema());
   }
 }
 
