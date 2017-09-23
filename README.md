@@ -2,4 +2,4 @@
 
 Object serialization for Nodejs >= 7.10.1
 
-Heavily inspired on [Marshmallow](https://marshmallow.readthedocs.io)
+Heavily inspired by [Marshmallow](https://marshmallow.readthedocs.io)
