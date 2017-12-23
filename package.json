@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "jest src && eslint ./src",
-    "build": "tsc",
+    "build": "tsc && rm -rf dist/__tests__",
     "preversion": "yarn test",
     "version": "yarn run build",
     "postversion": "git push && git push --tags"
@@ -14,9 +14,7 @@
     "type": "git",
     "url": "git://github.com/andressrg/fogata.git"
   },
-  "files": [
-    "dist/*"
-  ],
+  "files": ["dist/*"],
   "author": "Andres Serrano",
   "license": "MIT",
   "devDependencies": {
@@ -34,13 +32,6 @@
       "^.+\\.tsx?$": "ts-jest"
     },
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ]
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"]
   }
 }
