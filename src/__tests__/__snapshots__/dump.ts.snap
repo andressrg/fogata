@@ -3,8 +3,8 @@
 exports[`dumps 1`] = `
 Object {
   "artist": Object {
+    "artistName": "El Cuarteto De Nos",
     "myAsyncAttr": "something",
-    "name": "El Cuarteto De Nos",
   },
   "release_date": "2014-10-06T18:51:17.749Z",
   "title": "Habla Tu Espejo",
@@ -15,24 +15,24 @@ exports[`dumps many 1`] = `
 Array [
   Object {
     "artist": Object {
+      "artistName": "El Cuarteto De Nos",
       "myAsyncAttr": "something",
-      "name": "El Cuarteto De Nos",
     },
     "release_date": "2014-10-06T18:51:17.749Z",
     "title": "Habla Tu Espejo",
   },
   Object {
     "artist": Object {
+      "artistName": "El Cuarteto De Nos",
       "myAsyncAttr": "something",
-      "name": "El Cuarteto De Nos",
     },
     "release_date": "2014-10-06T18:51:17.749Z",
     "title": "Habla Tu Espejo",
   },
   Object {
     "artist": Object {
+      "artistName": "El Cuarteto De Nos",
       "myAsyncAttr": "something",
-      "name": "El Cuarteto De Nos",
     },
     "release_date": "2014-10-06T18:51:17.749Z",
     "title": "Habla Tu Espejo",
@@ -43,8 +43,8 @@ Array [
 exports[`loads 1`] = `
 Object {
   "artist": Object {
+    "artistName": "El Cuarteto De Nos",
     "myAsyncAttr": "something",
-    "name": "El Cuarteto De Nos",
   },
   "release_date": 2014-10-06T18:51:17.749Z,
   "title": "Habla Tu Espejo",

@@ -1,22 +1,20 @@
-const { Schema, fields, ValidationError } = require('../');
+import { Schema } from '../';
+import * as fields from '../fields';
+import { ValidationError } from '../errors';
 
 class MyAsyncField extends fields.Field {
-  async load(input) {
+  async load(input: any) {
     return await Promise.resolve(input);
   }
 
-  async dump(input) {
+  async dump(input: any) {
     return await Promise.resolve(input);
   }
 }
 
 class ArtistSchema extends Schema {
-  static get name() {
-    return new fields.StringField();
-  }
-  static get myAsyncAttr() {
-    return new MyAsyncField();
-  }
+  static artistName = new fields.StringField();
+  static myAsyncAttr = new MyAsyncField();
 }
 
 class AlbumSchema extends Schema {
@@ -36,7 +34,7 @@ class AlbumSchema extends Schema {
 it('loads', async () => {
   expect(
     await new AlbumSchema().load({
-      artist: { name: 'El Cuarteto De Nos', myAsyncAttr: 'something' },
+      artist: { artistName: 'El Cuarteto De Nos', myAsyncAttr: 'something' },
       title: 'Habla Tu Espejo',
       release_date: '2014-10-06T18:51:17.749Z'
     })
@@ -45,13 +43,8 @@ it('loads', async () => {
 
 it('validation throws', async () => {
   class UserSchema extends Schema {
-    static get email() {
-      return new fields.EmailField({ required: true });
-    }
-
-    static get name() {
-      return new fields.StringField({ required: true });
-    }
+    static email = new fields.EmailField({ required: true });
+    static artistName = new fields.StringField({ required: true });
   }
 
   const resultPromise = new UserSchema().load({
@@ -67,7 +60,7 @@ it('validation throws', async () => {
     expect(err).toBeInstanceOf(ValidationError);
     expect(err.messages).toEqual({
       email: ['foo is not a valid email address.'],
-      name: ['Required value.']
+      artistName: ['Required value.']
     });
   }
 
