@@ -1,49 +1,41 @@
-const _ = require('lodash');
-const { Schema, fields } = require('../');
+import * as _ from 'lodash';
+import { Schema } from '../';
+import * as fields from '../fields';
 
 class MyAsyncField extends fields.Field {
-  async load(input) {
+  async load(input: any) {
     return await Promise.resolve(input);
   }
 
-  async dump(input) {
+  async dump(input: any) {
     return await Promise.resolve(input);
   }
 }
 
 class ArtistSchema extends Schema {
-  static get name() {
-    return new fields.StringField();
-  }
-  static get myAsyncAttr() {
-    return new MyAsyncField();
-  }
+  static artistName = new fields.StringField();
+  static myAsyncAttr = new MyAsyncField();
 }
 
 class AlbumSchema extends Schema {
-  static get title() {
-    return new fields.StringField();
-  }
-
-  static get release_date() {
-    return new fields.DateField();
-  }
-
-  static get artist() {
-    return new fields.NestedField(new ArtistSchema());
-  }
+  static title = new fields.StringField();
+  static release_date = new fields.DateField();
+  static artist = new fields.NestedField(new ArtistSchema());
 }
 
 class Instancifier {
-  constructor(data) {
-    Object.getOwnPropertyNames(data).forEach(attr => (this[attr] = data[attr]));
+  constructor(data: any) {
+    Object.getOwnPropertyNames(data).forEach(attr => {
+      // @ts-ignore
+      this[attr] = data[attr];
+    });
   }
 }
 
 it('loads', async () => {
   expect(
     await new AlbumSchema().load({
-      artist: { name: 'El Cuarteto De Nos', myAsyncAttr: 'something' },
+      artist: { artistName: 'El Cuarteto De Nos', myAsyncAttr: 'something' },
       title: 'Habla Tu Espejo',
       release_date: '2014-10-06T18:51:17.749Z'
     })
@@ -55,7 +47,7 @@ it('dumps', async () => {
     await new AlbumSchema().dump(
       new Instancifier({
         artist: new Instancifier({
-          name: 'El Cuarteto De Nos',
+          artistName: 'El Cuarteto De Nos',
           myAsyncAttr: 'something'
         }),
         title: 'Habla Tu Espejo',
@@ -71,7 +63,7 @@ it('dumps only', async () => {
       await new AlbumSchema({ only: ['title', 'release_date'] }).dump(
         new Instancifier({
           artist: new Instancifier({
-            name: 'El Cuarteto De Nos',
+            artistName: 'El Cuarteto De Nos',
             myAsyncAttr: 'something'
           }),
           title: 'Habla Tu Espejo',
@@ -88,7 +80,7 @@ it('dumps exclude', async () => {
       await new AlbumSchema({ exclude: ['title'] }).dump(
         new Instancifier({
           artist: new Instancifier({
-            name: 'El Cuarteto De Nos',
+            artistName: 'El Cuarteto De Nos',
             myAsyncAttr: 'something'
           }),
           title: 'Habla Tu Espejo',
@@ -106,7 +98,7 @@ it('dumps many', async () => {
       () =>
         new Instancifier({
           artist: new Instancifier({
-            name: 'El Cuarteto De Nos',
+            artistName: 'El Cuarteto De Nos',
             myAsyncAttr: 'something'
           }),
           title: 'Habla Tu Espejo',

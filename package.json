@@ -2,7 +2,7 @@
   "name": "fogata",
   "version": "0.3.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "jest && eslint ."
   },
@@ -13,9 +13,20 @@
   "author": "Andres Serrano",
   "license": "MIT",
   "devDependencies": {
+    "@types/jest": "^21.1.9",
+    "@types/lodash": "^4.14.91",
     "babel-eslint": "^7.0.0",
     "eslint": "^4.7.2",
     "jest": "^21.1.0",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "ts-jest": "^22.0.0",
+    "typescript": "^2.6.2"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"]
   }
 }
