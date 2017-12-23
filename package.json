@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "test": "jest && eslint .",
+    "test": "jest src && eslint ./src",
     "build": "tsc",
     "preversion": "yarn test",
     "version": "yarn run build",
