@@ -5,7 +5,10 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "jest && eslint .",
-    "build": "tsc"
+    "build": "tsc",
+    "preversion": "yarn test",
+    "version": "yarn run build",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
