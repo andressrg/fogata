@@ -1,11 +1,7 @@
 import { ValidationError } from './errors';
 import { Schema } from './index';
 
-interface Validator {
-  validate(value: any): void;
-}
-
-class Validator implements Validator {
+export class Validator implements Validator {
   validate(value: any) {}
 }
 
@@ -18,7 +14,7 @@ class RequiredValidator extends Validator {
   }
 }
 
-interface FieldParams {
+export interface FieldParams {
   validators?: Array<Validator>;
   required?: boolean;
 }

@@ -1,5 +1,7 @@
-import * as fields from './fields';
+import * as importedFields from './fields';
 import { ValidationError } from './errors';
+
+export const fields = { ...importedFields };
 
 export class Schema {
   only: string[];
@@ -29,14 +31,16 @@ export class Schema {
   _getFields(): string[] {
     return Object.getOwnPropertyNames(this.constructor).filter(
       attr =>
-        this._getField(attr) instanceof fields.Field &&
+        this._getField(attr) instanceof importedFields.Field &&
         this._checkExcludeAndOnly(attr)
     );
   }
 
-  _getField(name: string): fields.Field {
+  _getField(name: string): importedFields.Field {
     // @ts-ignore
-    return (this.constructor as { [propName: string]: fields.Field })[name];
+    return (this.constructor as { [propName: string]: importedFields.Field })[
+      name
+    ];
   }
 
   async load(data: any) {
