@@ -1,6 +1,6 @@
 {
   "name": "fogata",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -14,7 +14,9 @@
     "type": "git",
     "url": "git://github.com/andressrg/fogata.git"
   },
-  "files": ["dist/*"],
+  "files": [
+    "dist/*"
+  ],
   "types": "dist/index.d.ts",
   "author": "Andres Serrano",
   "license": "MIT",
@@ -33,6 +35,13 @@
       "^.+\\.tsx?$": "ts-jest"
     },
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"]
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
   }
 }
